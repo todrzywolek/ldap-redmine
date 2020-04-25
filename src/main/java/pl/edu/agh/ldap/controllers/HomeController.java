@@ -12,8 +12,8 @@ import java.util.Collection;
 @RestController
 public class HomeController {
 
-    @GetMapping("/")
-    public String index(Principal principal) {
+    @GetMapping({"/", "/overview"})
+    public String overview(Principal principal) {
         System.out.println(principal.getName());
         SecurityContext context = SecurityContextHolder.getContext();
         Collection<? extends GrantedAuthority> authorities = context.getAuthentication().getAuthorities();
