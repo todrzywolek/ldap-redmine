@@ -11,6 +11,7 @@ public class IssueConfig {
         IssueValidator validator = new IssueValidator();
         IssueRepository repository = new IssueRepository();
         IssueCreator creator = new IssueCreator(validator, repository);
-        return new IssueService(creator);
+        IssueReader issueReader = new IssueReader(repository);
+        return new IssueService(creator, issueReader);
     }
 }

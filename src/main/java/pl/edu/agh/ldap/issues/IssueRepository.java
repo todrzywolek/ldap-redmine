@@ -1,5 +1,6 @@
 package pl.edu.agh.ldap.issues;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,5 +13,9 @@ public class IssueRepository {
         issueDao.setId(UUID.randomUUID());
         issues.put(issueDao.getId(), issueDao);
         return issueDao;
+    }
+
+    public Collection<IssueDao> getAll() {
+        return issues.values();
     }
 }
