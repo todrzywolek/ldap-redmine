@@ -1,6 +1,15 @@
 package pl.edu.agh.ldap.issues;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.client.HttpClientErrorException;
+import pl.edu.agh.ldap.security.RedminePrincipal;
 import pl.edu.agh.ldap.utils.DateTimeUtils;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 
 public class IssueValidator {
 
@@ -14,6 +23,16 @@ public class IssueValidator {
     }
 
     private void validateTracker(String tracker) {
+        if (IssueTracker.ADMIN.name().equals(tracker.toUpperCase())) {
+            Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+            for (GrantedAuthority a : authorities) {
+                if ("ROLE_MANAGERS".equals(a.getAuthority())) {
+                    return;
+                }
+            }
+            throw HttpClientErrorException.create(HttpStatus.FORBIDDEN, "Unauthorized", new HttpHeaders(), "{\"message\": \"User is not a manager\"}".getBytes(), StandardCharsets.UTF_8);
+
+        }
         if (tracker != null && !tracker.isEmpty()) {
             String upperCaseTracker = tracker.toUpperCase();
             for (IssueTracker t : IssueTracker.values()) {
