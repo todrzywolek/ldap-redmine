@@ -33,7 +33,7 @@ public class IssueValidator {
             throw HttpClientErrorException.create(HttpStatus.FORBIDDEN, "Unauthorized", new HttpHeaders(), "{\"message\": \"User is not a manager\"}".getBytes(), StandardCharsets.UTF_8);
 
         }
-        if (tracker != null && !tracker.isEmpty()) {
+        if (!tracker.isEmpty()) {
             String upperCaseTracker = tracker.toUpperCase();
             for (IssueTracker t : IssueTracker.values()) {
                 if (upperCaseTracker.equals(t.name())) {
@@ -42,7 +42,7 @@ public class IssueValidator {
             }
         }
 
-        throw new IllegalArgumentException("Status not allowed.");
+        throw new IllegalArgumentException("Tracker not allowed.");
 
     }
 
