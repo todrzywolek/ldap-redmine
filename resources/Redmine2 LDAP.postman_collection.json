@@ -64,7 +64,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/api/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -124,7 +124,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/overview",
+					"raw": "http://localhost:8080/api/overview",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -184,7 +184,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/issues",
+					"raw": "http://localhost:8080/api/issues",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -241,7 +241,7 @@
 					"raw": "{\n\t\"tracker\": \"bug\",\n\t\"subject\": \"Issue\",\n\t\"status\": \"new\",\n\t\"category\": \"development\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/issues",
+					"raw": "http://localhost:8080/api/issues",
 					"protocol": "http",
 					"host": [
 						"localhost"
