@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")
                 .contextSource()
-                .url("ldap://localhost:8389/dc=redmine2,dc=org")
+                .url("ldap://localhost:389/dc=redmine2,dc=org")
                 .and()
                 .passwordCompare()
                 .passwordAttribute("userPassword");
