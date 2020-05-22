@@ -1,0 +1,25 @@
+<h2>My Tickets</h2>
+<ul class="tickets">
+  <li *ngFor="let ticket of tickets"
+      [class.selected]="ticket === selectedTicket"
+      (click)="onSelect(ticket)">
+    <span class="badge">{{ticket.status}}</span> {{ticket.subject}}
+  </li>
+</ul>
+
+<div *ngIf="selectedTicket">
+
+  <h2>{{selectedTicket.subject | uppercase}} subject</h2>
+  <div><span>status: </span>{{selectedTicket.status}}</div>
+  <div>
+    <label>status:
+      <input [(ngModel)]="selectedTicket.subject" placeholder="status"/>
+    </label>
+  </div>
+
+</div>
+
+
+<a routerLink="/add-ticket">Add ticket</a>
+
+<a routerLink="/home">Home</a>

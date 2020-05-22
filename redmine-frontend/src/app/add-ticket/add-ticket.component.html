@@ -1,0 +1,27 @@
+<h1>Add new ticket</h1>
+
+<form (submit)="addTicket($event)">
+  <select id="tracker" name="tracker">
+    <option value="bug">Bug</option>
+    <option value="feature">Feature</option>
+    <option value="support">Support</option>
+    <option value="admin">Admin</option>
+  </select>
+  <input type="text" placeholder="Subject" id="subject">
+  <select id="status" name="status">
+    <option value="new">New</option>
+    <option value="assigned">Assigned</option>
+    <option value="feedback">Feedback</option>
+    <option value="resolved">Resolved</option>
+    <option value="closed">Closed</option>
+  </select>
+  <select id="category" name="category">
+    <option value="design">Design</option>
+    <option value="development">Development</option>
+    <option value="documentation">Documentation</option>
+  </select>
+  <input type="submit" value="Submit">
+</form>
+
+<a routerLink="/tickets">Tickets</a>
+<a routerLink="/home">Home</a>
