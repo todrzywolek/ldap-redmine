@@ -1,9 +1,6 @@
 package pl.edu.agh.ldap.issues;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class IssueRepository {
     private final Map<UUID, IssueDao> issues = new HashMap<>();
@@ -17,5 +14,10 @@ public class IssueRepository {
 
     public Collection<IssueDao> getAll() {
         return issues.values();
+    }
+
+    public Optional<IssueDao> getById(String id) {
+        IssueDao issueDao = issues.get(UUID.fromString(id));
+        return Optional.ofNullable(issueDao);
     }
 }

@@ -3,10 +3,7 @@ package pl.edu.agh.ldap.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.ldap.issues.Issue;
 import pl.edu.agh.ldap.issues.IssueDao;
 import pl.edu.agh.ldap.issues.IssueService;
@@ -33,5 +30,11 @@ public class IssueController {
     public ResponseEntity<?> createIssue(@RequestBody Issue issue) {
         issueService.createIssue(issue);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/issues/{id}")
+    public ResponseEntity<?> updateIssue(@PathVariable String id, @RequestBody Issue newIssue) {
+        issueService.updateIssue(id, newIssue);
+        return ResponseEntity.ok().build();
     }
 }

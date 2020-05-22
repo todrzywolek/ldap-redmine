@@ -1,11 +1,8 @@
 package pl.edu.agh.ldap.issues;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import pl.edu.agh.ldap.security.AuthUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class IssueReader {
 
@@ -17,14 +14,9 @@ public class IssueReader {
 
     public Collection<IssueDao> getAllIssues() {
         Collection<IssueDao> issues = repository.getAll();
-        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        boolean isAdmin = false;
-        for (GrantedAuthority a : authorities) {
-            if ("ROLE_MANAGERS".equals(a.getAuthority())) {
-                isAdmin = true;
-                break;
-            }
-        }
+
+        boolean isAdmin = AuthUtils.checkIfAdmin();
+
         List<IssueDao> selectedIssues = new ArrayList<>();
         for (IssueDao issue : issues) {
             if (IssueTracker.ADMIN == (issue.getTracker())) {
@@ -37,5 +29,16 @@ public class IssueReader {
         }
 
         return selectedIssues;
+    }
+
+    public IssueDao getIssueById(String id) {
+        Optional<IssueDao> issueOpt = repository.getById(id);
+        IssueDao issue = issueOpt.orElseThrow();
+        if (IssueTracker.ADMIN == (issue.getTracker())) {
+            if (!AuthUtils.checkIfAdmin()) {
+                throw new NoSuchElementException();
+            }
+        }
+        return issue;
     }
 }

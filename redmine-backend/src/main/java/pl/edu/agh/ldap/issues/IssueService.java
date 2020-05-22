@@ -21,4 +21,9 @@ public class IssueService {
     public IssueDao createIssue(Issue issue) {
         return issueCreator.createIssue(issue);
     }
+
+    public IssueDao updateIssue(String id, Issue newIssue) {
+        IssueDao issue = issueReader.getIssueById(id);
+        return issueCreator.updateIssue(issue, newIssue);
+    }
 }

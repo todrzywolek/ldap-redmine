@@ -1,5 +1,6 @@
 package pl.edu.agh.ldap.issues;
 
+import org.dozer.DozerBeanMapper;
 import pl.edu.agh.ldap.utils.DateTimeUtils;
 
 import java.time.LocalDate;
@@ -7,17 +8,26 @@ import java.time.LocalDate;
 public class IssueCreator {
     private final IssueValidator issueValidator;
     private final IssueRepository issueRepository;
+    private final DozerBeanMapper mapper;
 
     public IssueCreator(IssueValidator issueValidator,
-                        IssueRepository issueRepository) {
+                        IssueRepository issueRepository, DozerBeanMapper mapper) {
         this.issueValidator = issueValidator;
         this.issueRepository = issueRepository;
+        this.mapper = mapper;
     }
 
-    public IssueDao createIssue(Issue issue) {
+    IssueDao createIssue(Issue issue) {
         issueValidator.validateIssue(issue);
         IssueDao issueDao = convertToDao(issue);
         return issueRepository.save(issueDao);
+    }
+
+    IssueDao updateIssue(IssueDao oldIssue, Issue newIssue) {
+        IssueDao newIssueDao = convertToDao(newIssue);
+        newIssueDao.setId(oldIssue.getId());
+        mapper.map(newIssueDao, oldIssue);
+        return issueRepository.save(oldIssue);
     }
 
     private IssueDao convertToDao(Issue issue) {
