@@ -38,7 +38,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         BasicAuthenticationFilter.class);
 
         http.csrf().disable();
-        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        http.cors().configurationSource(request -> {
+            CorsConfiguration corsConfiguration = new CorsConfiguration();
+            corsConfiguration.applyPermitDefaultValues();
+            corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
+            corsConfiguration.addAllowedMethod(HttpMethod.POST);
+            corsConfiguration.addAllowedMethod(HttpMethod.OPTIONS);
+            corsConfiguration.addAllowedMethod(HttpMethod.PUT);
+            return corsConfiguration;
+        });
 
     }
 
