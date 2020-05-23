@@ -4,6 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 import org.springframework.util.Base64Utils;
 
 
@@ -18,12 +19,13 @@ public class UserAuthenticationService {
         this.jwtCreator = jwtCreator;
     }
 
-    public String login(String authHeader) {
+    public LoginResponse login(String authHeader) {
         if (authHeader != null && !authHeader.isEmpty()) {
             String[] credentials = getCredentialsFromAuthenticationHeader(authHeader);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(credentials[0], credentials[1]);
             Authentication authenticationResult = authenticationManager.authenticate(authentication);
-            return jwtCreator.createJwt(authenticationResult);
+            String token = jwtCreator.createJwt(authenticationResult);
+            return new LoginResponse(token, (LdapUserDetailsImpl) authenticationResult.getPrincipal());
         }
         throw new AuthenticationServiceException("No authentication header");
     }

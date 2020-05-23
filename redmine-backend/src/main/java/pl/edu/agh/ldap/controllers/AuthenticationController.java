@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import pl.edu.agh.ldap.security.LoginResponse;
 import pl.edu.agh.ldap.security.UserAuthenticationService;
 
 @RestController
@@ -20,9 +21,9 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
-        String token = authenticationService.login(authHeader);
+        LoginResponse loginResponse = authenticationService.login(authHeader);
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .build();
+                .header(HttpHeaders.AUTHORIZATION, loginResponse.getToken())
+                .body(loginResponse.getUserDetails());
     }
 }
