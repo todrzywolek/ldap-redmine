@@ -12,14 +12,30 @@
   <h2>{{selectedTicket.subject | uppercase}} subject</h2>
   <div><span>status: </span>{{selectedTicket.status}}</div>
   <div>
-    <label>status:
+    <label>Subject:
       <input [(ngModel)]="selectedTicket.subject" placeholder="status"/>
+    </label>
+    <label>Assignee:
+      <input [(ngModel)]="selectedTicket.assignee" placeholder="assignee"/>
+    </label>
+    <label>Priority:
+      <input [(ngModel)]="selectedTicket.priority" placeholder="priority"/>
     </label>
   </div>
 
+  <div >
+
+
+  </div>
+  <button>Edit ticket</button>
+  <button (click)="deleteTicket(selectedTicket)">Delete ticket</button>
+
+</div>
+
+<div>
+  <a routerLink="/add-ticket">Add ticket</a>
+  <a routerLink="/home">Home</a>
 </div>
 
 
-<a routerLink="/add-ticket">Add ticket</a>
 
-<a routerLink="/home">Home</a>

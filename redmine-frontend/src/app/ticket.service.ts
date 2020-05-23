@@ -37,4 +37,9 @@ export class TicketService {
     window.alert('Error during add ticket. Message: ' + err.message);
     throw new Error('error in source. Details: ' + err);
   }
+
+  deleteTicket(selectedTicket: Ticket) {
+    const headers = this.auth.getTokenHeader();
+    return this.http.delete('/api/issues/' + selectedTicket.id, {headers})
+  }
 }

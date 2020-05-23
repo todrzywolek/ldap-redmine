@@ -31,4 +31,14 @@ export class TicketsComponent implements OnInit {
     this.selectedTicket = ticket;
   }
 
+  deleteTicket(selectedTicket: Ticket) {
+    this.ticketService.deleteTicket(selectedTicket)
+      .subscribe(res => {
+        console.log(res);
+        const index: number = this.tickets.indexOf(selectedTicket);
+        if (index !== -1) {
+          this.tickets.splice(index, 1);
+        }
+      });
+  }
 }
