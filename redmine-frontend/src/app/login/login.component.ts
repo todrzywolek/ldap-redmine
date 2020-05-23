@@ -24,7 +24,9 @@ export class LoginComponent implements OnInit {
     this.Auth.loginUser(username, password)
       .subscribe((res: HttpResponse<any>) => {
         const token = res.headers.get('Authorization');
-        this.Auth.setLoggedIn(token);
+        this.Auth.setLoggedInAndUserDetails(token, res.body);
+
+
         this.router.navigate(['home']);
       });
   }

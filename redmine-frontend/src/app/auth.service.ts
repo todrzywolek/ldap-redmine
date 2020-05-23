@@ -2,6 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
+import {Error} from "tslint/lib/error";
+
+export interface UserDetails {
+  username: string;
+  authorities: string[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +15,7 @@ import {catchError} from 'rxjs/operators';
 export class AuthService {
 
   private loggedInStatus = 'loggedInStatus';
+  private userDetails: UserDetails;
 
   constructor(private http: HttpClient) {
   }
@@ -41,9 +48,10 @@ export class AuthService {
     return loggedInStatus === null || loggedInStatus.length === 0 ? false : loggedInStatus === 'true';
   }
 
-  setLoggedIn(token: string | null) {
+  setLoggedInAndUserDetails(token: string | null, userDetails: UserDetails) {
     localStorage.setItem('token', token);
     localStorage.setItem(this.loggedInStatus, 'true');
+    this.userDetails = userDetails;
     console.log('User logged in successfully');
   }
 
@@ -57,5 +65,9 @@ export class AuthService {
     return new HttpHeaders({
       Authorization: token
     });
+  }
+
+  getUserDetails() {
+    return this.userDetails;
   }
 }
