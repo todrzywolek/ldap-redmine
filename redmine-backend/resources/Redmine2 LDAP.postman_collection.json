@@ -1,17 +1,17 @@
 {
 	"info": {
-		"_postman_id": "7620f86d-ae17-4a8b-a862-1cf1359857cd",
+		"_postman_id": "4b57348d-629d-49b7-b4fd-99984c6cd9f3",
 		"name": "Redmine2 LDAP",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "1. Login",
+			"name": "1. Login manager",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "5c2122da-2946-40a2-80eb-70fb2fe4dad0",
+						"id": "d52a1aaa-d7bc-49e3-9ae6-a66eca6d8ec1",
 						"exec": [
 							"var token = postman.getResponseHeader(\"Authorization\");",
 							"postman.setEnvironmentVariable(\"authorizationHeader\", token);"
@@ -71,6 +71,7 @@
 					],
 					"port": "8080",
 					"path": [
+						"api",
 						"login"
 					]
 				}
@@ -78,34 +79,46 @@
 			"response": []
 		},
 		{
-			"name": "2. Overview",
+			"name": "2. Login developer",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "5c2122da-2946-40a2-80eb-70fb2fe4dad0",
+						"id": "7a6da187-7505-452b-aea8-c4f4b6055d01",
 						"exec": [
-							""
+							"var token = postman.getResponseHeader(\"Authorization\");",
+							"postman.setEnvironmentVariable(\"authorizationHeader\", token);"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "basic",
+					"basic": [
 						{
-							"key": "token",
-							"value": "{{authorizationHeader}}",
+							"key": "password",
+							"value": "bobspassword",
 							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "bob",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"type": "any"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
 						}
 					]
 				},
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -124,14 +137,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/overview",
+					"raw": "http://localhost:8080/api/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"overview"
+						"api",
+						"login"
 					]
 				}
 			},
@@ -143,7 +157,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5c2122da-2946-40a2-80eb-70fb2fe4dad0",
+						"id": "ad85831c-4971-4784-88d0-89446df66195",
 						"exec": [
 							""
 						],
@@ -191,6 +205,7 @@
 					],
 					"port": "8080",
 					"path": [
+						"api",
 						"issues"
 					]
 				}
@@ -203,7 +218,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5c2122da-2946-40a2-80eb-70fb2fe4dad0",
+						"id": "11e22a35-be38-4bb1-9467-bfb649ff857f",
 						"exec": [
 							""
 						],
@@ -238,7 +253,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"tracker\": \"bug\",\n\t\"subject\": \"Issue\",\n\t\"status\": \"new\",\n\t\"category\": \"development\"\n}"
+					"raw": "{\n\t\"tracker\": \"admin\",\n\t\"subject\": \"Issue1\",\n\t\"status\": \"new\",\n\t\"category\": \"development\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/issues",
@@ -248,11 +263,72 @@
 					],
 					"port": "8080",
 					"path": [
+						"api",
 						"issues"
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "5. Update issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c630b04d-92f3-43e8-8cb5-37d19e22ddac",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authorizationHeader}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"priority\": \"major\",\n        \"dueDate\": \"2020-05-31\",\n        \"estimatedTime\": 10,\n        \"assignee\": \"Tomek\"\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/issues/f4e015bc-5750-48bc-981e-821047052738",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"issues",
+						"f4e015bc-5750-48bc-981e-821047052738"
+					]
+				}
+			},
+			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
