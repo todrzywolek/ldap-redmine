@@ -5,13 +5,13 @@ import pl.edu.agh.ldap.utils.DateTimeUtils;
 
 import java.time.LocalDate;
 
-public class IssueCreator {
+public class IssueModifier {
     private final IssueValidator issueValidator;
     private final IssueRepository issueRepository;
     private final DozerBeanMapper mapper;
 
-    public IssueCreator(IssueValidator issueValidator,
-                        IssueRepository issueRepository, DozerBeanMapper mapper) {
+    public IssueModifier(IssueValidator issueValidator,
+                         IssueRepository issueRepository, DozerBeanMapper mapper) {
         this.issueValidator = issueValidator;
         this.issueRepository = issueRepository;
         this.mapper = mapper;
@@ -24,10 +24,20 @@ public class IssueCreator {
     }
 
     IssueDao updateIssue(IssueDao oldIssue, Issue newIssue) {
-        IssueDao newIssueDao = convertToDao(newIssue);
+        IssueDao newIssueDao = new IssueDao();
         newIssueDao.setId(oldIssue.getId());
-        mapper.map(newIssueDao, oldIssue);
-        return issueRepository.save(oldIssue);
+        newIssueDao.setTracker(newIssue.getTracker() != null ? IssueTracker.valueOf(newIssue.getTracker().toUpperCase()) : oldIssue.getTracker());
+        newIssueDao.setSubject(newIssue.getSubject() != null ? newIssue.getSubject() : oldIssue.getSubject());
+        newIssueDao.setDescription(newIssue.getDescription() != null ? newIssue.getDescription() : oldIssue.getDescription());
+        newIssueDao.setStatus(newIssue.getStatus() != null ? IssueStatus.valueOf(newIssue.getStatus().toUpperCase()) : oldIssue.getStatus());
+        newIssueDao.setPriority(newIssue.getPriority() != null ? IssuePriority.valueOf(newIssue.getPriority().toUpperCase()) : oldIssue.getPriority());
+        newIssueDao.setAssignee(newIssue.getAssignee() != null ? newIssue.getAssignee() : oldIssue.getAssignee());
+        newIssueDao.setCategory(newIssue.getCategory() != null ? IssueCategory.valueOf(newIssue.getCategory().toUpperCase()) : oldIssue.getCategory());
+        newIssueDao.setStartDate(newIssue.getStartDate() != null ? DateTimeUtils.convertDate(newIssue.getStartDate()) : oldIssue.getStartDate());
+        newIssueDao.setDueDate(newIssue.getDueDate() != null ? DateTimeUtils.convertDate(newIssue.getDueDate()) : oldIssue.getDueDate());
+        newIssueDao.setEstimatedTime(newIssue.getEstimatedTime() != null ? Integer.parseInt(newIssue.getEstimatedTime()) : oldIssue.getEstimatedTime());
+
+        return issueRepository.save(newIssueDao);
     }
 
     private IssueDao convertToDao(Issue issue) {
@@ -56,5 +66,9 @@ public class IssueCreator {
             issueDao.setDueDate(DateTimeUtils.convertDate(issue.getDueDate()));
         }
         return issueDao;
+    }
+
+    void deleteIssue(String id) {
+        issueRepository.deleteById(id);
     }
 }

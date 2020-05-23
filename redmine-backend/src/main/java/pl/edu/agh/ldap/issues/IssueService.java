@@ -4,12 +4,12 @@ import java.util.Collection;
 
 public class IssueService {
 
-    private final IssueCreator issueCreator;
+    private final IssueModifier issueModifier;
     private final IssueReader issueReader;
 
-    public IssueService(IssueCreator issueCreator,
+    public IssueService(IssueModifier issueModifier,
                         IssueReader issueReader) {
-        this.issueCreator = issueCreator;
+        this.issueModifier = issueModifier;
         this.issueReader = issueReader;
     }
 
@@ -19,11 +19,15 @@ public class IssueService {
     }
 
     public IssueDao createIssue(Issue issue) {
-        return issueCreator.createIssue(issue);
+        return issueModifier.createIssue(issue);
     }
 
     public IssueDao updateIssue(String id, Issue newIssue) {
         IssueDao issue = issueReader.getIssueById(id);
-        return issueCreator.updateIssue(issue, newIssue);
+        return issueModifier.updateIssue(issue, newIssue);
+    }
+
+    public void deleteIssue(String id) {
+        issueModifier.deleteIssue(id);
     }
 }

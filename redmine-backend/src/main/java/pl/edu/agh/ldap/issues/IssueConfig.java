@@ -11,7 +11,7 @@ public class IssueConfig {
     public IssueService issueServiceBean(DozerBeanMapper mapper) {
         IssueValidator validator = new IssueValidator();
         IssueRepository repository = new IssueRepository();
-        IssueCreator creator = new IssueCreator(validator, repository, mapper);
+        IssueModifier creator = new IssueModifier(validator, repository, mapper);
         IssueReader issueReader = new IssueReader(repository);
         return new IssueService(creator, issueReader);
     }

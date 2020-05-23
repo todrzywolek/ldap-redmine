@@ -37,4 +37,10 @@ public class IssueController {
         issueService.updateIssue(id, newIssue);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteIssue(@PathVariable String id) {
+        issueService.deleteIssue(id);
+        return ResponseEntity.ok().build();
+    }
 }

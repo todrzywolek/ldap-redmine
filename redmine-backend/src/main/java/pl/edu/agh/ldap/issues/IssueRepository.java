@@ -7,7 +7,9 @@ public class IssueRepository {
 
 
     public IssueDao save(IssueDao issueDao) {
-        issueDao.setId(UUID.randomUUID());
+        if (issueDao.getId() == null) {
+            issueDao.setId(UUID.randomUUID());
+        }
         issues.put(issueDao.getId(), issueDao);
         return issueDao;
     }
@@ -19,5 +21,9 @@ public class IssueRepository {
     public Optional<IssueDao> getById(String id) {
         IssueDao issueDao = issues.get(UUID.fromString(id));
         return Optional.ofNullable(issueDao);
+    }
+
+    public void deleteById(String id) {
+        issues.remove(UUID.fromString(id));
     }
 }
