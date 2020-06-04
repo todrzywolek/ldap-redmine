@@ -1,5 +1,5 @@
-UnboundidLdap:
-  image: todrzywolek/unboundid_ldap:latest
+unboundid-ldap:
+  build: ./
   hostname: unboundid-ldap
   volumes:
     - ./conf:/opt/unboundid-ldap/conf

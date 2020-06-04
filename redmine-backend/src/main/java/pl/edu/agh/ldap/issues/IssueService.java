@@ -15,7 +15,10 @@ public class IssueService {
 
     public Collection<IssueDao> getAllIssues() {
         return issueReader.getAllIssues();
+    }
 
+    public void createComment(String id, String comment) {
+        issueModifier.addComment(issueReader.getIssueById(id), comment);
     }
 
     public IssueDao createIssue(Issue issue) {

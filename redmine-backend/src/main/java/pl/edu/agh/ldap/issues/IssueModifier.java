@@ -40,6 +40,11 @@ public class IssueModifier {
         return issueRepository.save(newIssueDao);
     }
 
+    void addComment(IssueDao issue, String comment) {
+        issue.getComments().add(comment);
+        issueRepository.save(issue);
+    }
+
     private IssueDao convertToDao(Issue issue) {
         IssueDao issueDao = new IssueDao();
         issueDao.setTracker(IssueTracker.valueOf(issue.getTracker().toUpperCase()));

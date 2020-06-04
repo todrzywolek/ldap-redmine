@@ -1,6 +1,8 @@
 package pl.edu.agh.ldap.issues;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class IssueDao {
@@ -15,6 +17,7 @@ public class IssueDao {
     private LocalDate startDate;
     private LocalDate dueDate;
     private int estimatedTime = 0;
+    private List<String> comments  = new ArrayList<>();
 
     public IssueTracker getTracker() {
         return tracker;
@@ -102,5 +105,13 @@ public class IssueDao {
 
     public UUID getId() {
         return id;
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
     }
 }

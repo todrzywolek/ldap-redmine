@@ -43,4 +43,10 @@ public class IssueController {
         issueService.deleteIssue(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/issues/{id}/comment")
+    public ResponseEntity<?> createComment(@PathVariable String id, @RequestBody String comment) {
+        issueService.createComment(id, comment);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }

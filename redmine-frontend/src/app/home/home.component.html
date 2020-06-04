@@ -1,5 +1,0 @@
-<h1>Hello {{user.username}}</h1>
-<h2>Your authorities: {{'' + (user.authorities.includes('ROLE_DEVELOPERS') ? 'developer' : '') + (user.authorities.includes('ROLE_MANAGERS') ? ', manager' : '')}}</h2>
-<a routerLink="/tickets">Tickets</a>
-<a routerLink="/manager">Manager</a>
-<a routerLink="/login" (click)="logout()">Logout</a>
