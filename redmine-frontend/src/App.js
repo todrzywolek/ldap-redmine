@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+const apiBaseUrl = 'http://localhost:8080/api';
+
 const $ = window.$;
 
 class App extends Component {
@@ -73,7 +75,7 @@ class Logger extends Component {
   handleSubmit(event) {
     console.log('Attempting to login')
     let credentials = btoa(`${this.state.username}:${this.state.password}`)
-    fetch('http://localhost:8080/api/login', {method: 'POST', headers: {'Authorization': `Basic ${credentials}`}})
+    fetch(apiBaseUrl + '/login', {method: 'POST', headers: {'Authorization': `Basic ${credentials}`}})
       .then(response => {
         if (!response.ok) {
           throw Error("Invalid login")
@@ -129,7 +131,7 @@ class Issues extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8080/api/issues', {
+    fetch(apiBaseUrl + '/issues', {
       method: 'GET',
       headers: {'Authorization': `Bearer ${this.props.token}`}
     })
@@ -141,7 +143,7 @@ class Issues extends Component {
   }
 
   onUpdate() {
-    fetch('http://localhost:8080/api/issues', {
+    fetch(apiBaseUrl + '/issues', {
       method: 'GET',
       headers: {'Authorization': `Bearer ${this.props.token}`}
     })
@@ -276,7 +278,7 @@ class AddIssue extends Component {
   }
 
   onEdit(event) {
-    fetch(`http://localhost:8080/api/issues/`, {
+    fetch(apiBaseUrl + `/issues/`, {
       method: 'POST',
       headers: {'Authorization': `Bearer ${this.props.token}`, 'Content-Type': 'application/json'},
       body: JSON.stringify(this.state)
@@ -380,7 +382,7 @@ class Issue extends Component {
   }
 
   onRemove() {
-    fetch(`http://localhost:8080/api/${this.props.issue.id}`, {
+    fetch(apiBaseUrl + `/${this.props.issue.id}`, {
       method: 'DELETE',
       headers: {'Authorization': `Bearer ${this.props.token}`},
     })
@@ -479,7 +481,7 @@ class Comments extends Component {
   }
 
   onComment(event) {
-    fetch(`http://localhost:8080/api/issues/${this.props.id}/comment`, {
+    fetch(apiBaseUrl + `/issues/${this.props.id}/comment`, {
       method: 'POST',
       headers: {'Authorization': `Bearer ${this.props.token}`},
       body: this.state.newComment
@@ -613,7 +615,7 @@ class EditIssue extends Component {
   }
 
   onEdit(event) {
-    fetch(`http://localhost:8080/api/issues/${this.props.issue.id}`, {
+    fetch(apiBaseUrl + `/issues/${this.props.issue.id}`, {
       method: 'PUT',
       headers: {'Authorization': `Bearer ${this.props.token}`, 'Content-Type': 'application/json'},
       body: JSON.stringify(this.state)
