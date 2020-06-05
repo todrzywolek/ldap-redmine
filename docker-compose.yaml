@@ -1,0 +1,25 @@
+version: "2.4"
+services:
+  redmine-ldap-server:
+    build: ./redmine_ldap_server
+    hostname: redmine-ldap-server
+    volumes:
+      - ./redmine_ldap_server/conf:/opt/unboundid-ldap/conf
+    ports:
+      - "389:389"
+
+  redmine-backend:
+    image: todrzywolek/redmine-backend
+    hostname: redmine-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redmine-ldap-server
+
+  redmine-frontend:
+      build: ./redmine-frontend
+      hostname: redmine-frontend
+      ports:
+        - "80:80"
+      depends_on:
+        - redmine-backend

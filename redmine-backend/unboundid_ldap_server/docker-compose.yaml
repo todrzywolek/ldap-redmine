@@ -1,7 +1,0 @@
-unboundid-ldap:
-  build: ./
-  hostname: unboundid-ldap
-  volumes:
-    - ./conf:/opt/unboundid-ldap/conf
-  ports:
-    - "389:389"
