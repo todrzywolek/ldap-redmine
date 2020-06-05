@@ -1,7 +1,9 @@
 package pl.edu.agh.ldap.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +17,9 @@ import org.springframework.web.cors.CorsConfiguration;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationEntryPoint authenticationEntryPoint = new RestAuthenticationEntryPoint();
+
+    @Value("${ldapUrl}")
+    private String ldapUrl;
 
 
     @Override
@@ -45,8 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             corsConfiguration.addAllowedMethod(HttpMethod.POST);
             corsConfiguration.addAllowedMethod(HttpMethod.OPTIONS);
             corsConfiguration.addAllowedMethod(HttpMethod.PUT);
-            corsConfiguration.addExposedHeader("Authorization");
-            corsConfiguration.addAllowedOrigin("http://localhost:3000");
+            corsConfiguration.addExposedHeader(HttpHeaders.AUTHORIZATION);
             return corsConfiguration;
         });
 
@@ -59,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")
                 .contextSource()
-                .url("ldap://localhost:389/dc=redmine2,dc=org")
+                .url("ldap://" + ldapUrl + ":389/dc=redmine2,dc=org")
                 .and()
                 .passwordCompare()
                 .passwordAttribute("userPassword");

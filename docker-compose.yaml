@@ -1,6 +1,7 @@
 version: "2.4"
 services:
   redmine-ldap-server:
+    image: todrzywolek/redmine-ldap-server
     build: ./redmine_ldap_server
     hostname: redmine-ldap-server
     volumes:
@@ -11,13 +12,15 @@ services:
   redmine-backend:
     image: todrzywolek/redmine-backend
     hostname: redmine-backend
+    environment:
+      - REDMINE_LDAP_SERVER_URL=redmine-ldap-server
     ports:
       - "8080:8080"
     depends_on:
       - redmine-ldap-server
 
   redmine-frontend:
-      build: ./redmine-frontend
+      image: todrzywolek/redmine-frontend
       hostname: redmine-frontend
       ports:
         - "80:80"
